@@ -5,7 +5,7 @@ class Quiz {
         this.timeRemaining = timeRemaining;
         this.correctAnswers = 0;
         this.currentQuestionIndex = 0;
-    }
+    };
 
     getQuestion () {
         return this.questions[this.currentQuestionIndex]; 
@@ -26,23 +26,32 @@ class Quiz {
     };
 
     checkAnswer (answer) {
-        return this.correctAnswers ++;
+        const question = this.getQuestion();
+        if (answer === question.answer){
+            return this.correctAnswers++;
+        };  
     };
 
     hasEnded () {
         if (this.currentQuestionIndex === this.questions.length){
             return true;
-        }
-        else {
+        } else {
             return false;
-        }
+        };
     };
 
     filterQuestionsByDifficulty (difficulty) {
-        
+       if (typeof difficulty !== 'number' || difficulty < 1 || difficulty > 3){
+        return;
+       }
+       this.questions = this.questions.filter(question => question.difficulty === difficulty);
     };
 
     averageDifficulty () {
-
+        const sum = this.questions.reduce((total, question) => {
+            const newTotal = total + question.difficulty;
+            return newTotal;
+        }, 0)
+        return sum / this.questions.length;
     };
 };
